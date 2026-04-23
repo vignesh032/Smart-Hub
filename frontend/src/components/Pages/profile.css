@@ -1,0 +1,32 @@
+.profile-card{
+    display: flex;
+    box-shadow: 0px 2px 14px rgba(0,0,0,0.3);
+    padding: 1em;
+    margin: 1em;
+    border-radius: 8px;
+    gap: 50px;
+
+}
+a{
+    text-decoration: none;
+}
+.profile-card img{
+    height: 150px;
+}
+.profile-card .profile-card-details{
+    width: 100%;
+}
+.profile-card .profile-links{
+    display: flex;
+    gap: 50px;
+    margin-bottom: 1em;
+}
+.profile-card .profile-links a:hover{
+    color: #5b7293;
+}
+.profile-card .profile-card-details .profile-card-details-top{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
