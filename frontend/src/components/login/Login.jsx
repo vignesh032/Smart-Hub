@@ -41,27 +41,24 @@ const Login = () => {
             password: pass,
           },
         );
-        console.log(res.data);
-        const userData = {
-          id: res.data.user._id,
-          username: res.data.user.username,
-        };
+
+        const userData = res.data.user;
+
         setUser(userData);
-        console.log(userData);
+        localStorage.setItem("user", JSON.stringify(userData)); // ✅ ADD THIS
+
         navigate("/");
       } else {
         const res = await axios.post("http://localhost:3000/api/auth/login", {
           username,
           password: pass,
         });
-        console.log(res.data);
-        const userData = {
-          id: res.data.user._id,
-          username: res.data.user.username,
-        };
+
+        const userData = res.data.user; // ✅ take FULL user
+
         setUser(userData);
-        localStorage.getItem("user");
-        console.log(userData);
+        localStorage.setItem("user", JSON.stringify(userData)); // ✅ FIXED
+
         navigate("/");
       }
     } catch (err) {

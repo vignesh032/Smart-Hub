@@ -30,3 +30,46 @@ a{
     align-items: center;
     justify-content: space-between;
 }
+.input-detailss{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 10em;
+    position: absolute;
+    z-index: 1;
+    left: 25em;
+    gap: 2em;
+    padding: 1em;
+    border-radius: 8px;
+    background: rgba(295,295,295,1);
+    box-shadow: 0px 2px 24px rgba(0,0,0,0.3);
+}
+.input-detailss fieldset{
+    padding: 2em;
+}
+.input-detailss .insta,.linkedin,.bio{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.input-detailss input{
+    padding: 10px;
+    width: 400px;
+    border: none;
+    outline: none;
+    margin-bottom: 2em;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.3);
+    border-radius: 4px;
+}
+.input-detailss .close-btn button{
+    width: 100px;
+    margin-right: 4em;
+    cursor: pointer;
+    transition: all 0.1s ease;
+}
+.input-detailss .close-btn input:hover{
+    transform: scale(1.01);
+}
+.input-detailss .close-btn{
+    display: flex;
+}

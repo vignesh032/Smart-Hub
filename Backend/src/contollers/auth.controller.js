@@ -40,6 +40,9 @@ const registerUser = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
+        insta: user.insta,  
+        linkedin: user.linkedin,
+        bio: user.bio,
       },
     });
   } catch (err) {
@@ -82,6 +85,9 @@ const loginUser = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
+        insta: user.insta, 
+        linkedin: user.linkedin, 
+        bio: user.bio,
       },
     });
   } catch (err) {
@@ -90,19 +96,60 @@ const loginUser = async (req, res) => {
   }
 };
 
-const getAllUsers = async(req,res)=>{
-  try{
+const getAllUsers = async (req, res) => {
+  try {
     const users = await userModel
-      .find({}, "username email instaId linkedinId bio")
-      .sort({ username: 1 }); 
+      .find({}, "username email insta linkedin bio")
+      .sort({ username: 1 });
 
     res.status(200).json({
-      users, 
+      users,
     });
-  }catch(err){
-    console.log(err.message)
-    res.status(500).json({message:"Server Error"})
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ message: "Server Error" });
   }
-}
+};
 
-module.exports = { registerUser, loginUser,getAllUsers };
+const updateUsers = async (req, res) => {
+  try {
+    const { id, insta, linkedin, bio } = req.body;
+
+    if (!id) {
+      return res.status(400).json({
+        message: "User ID is required",
+      });
+    }
+
+    const updateData = {};
+
+    if (typeof insta === "string") updateData.insta = insta.trim();
+    if (typeof linkedin === "string") updateData.linkedin = linkedin.trim();
+    if (typeof bio === "string") updateData.bio = bio.trim();
+
+    const user = await userModel.findByIdAndUpdate(id, updateData, {
+      returnDocument: "after",
+    });
+
+    // 🔥 IMPORTANT FIX
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+
+    const { password, ...safeUser } = user.toObject();
+
+    res.status(200).json({
+      message: "Profile Updated",
+      user: safeUser,
+    });
+  } catch (err) {
+    console.error("ERROR:", err); // 👈 CHECK THIS IN TERMINAL
+    res.status(500).json({
+      message: "Server Error",
+    });
+  }
+};
+
+module.exports = { registerUser, loginUser, getAllUsers, updateUsers };
