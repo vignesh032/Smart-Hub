@@ -1,0 +1,25 @@
+
+.team-details .team-m{
+    padding: 2em;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+    margin: 2em;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.team-details .team-m .profile{
+    height: 200px;
+}
+.team-m-details{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.team-m-details .a{
+    display: flex;
+}
+.team-m-details .insta,.linkedin{
+    height: 30px;
+    width: 40px;
+}

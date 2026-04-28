@@ -1,6 +1,9 @@
 const userModel = require("../models/auth.model");
+const fileModel = require("../models/file.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const fs = require("fs");
 
 const registerUser = async (req, res) => {
   try {
@@ -40,7 +43,7 @@ const registerUser = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
-        insta: user.insta,  
+        insta: user.insta,
         linkedin: user.linkedin,
         bio: user.bio,
       },
@@ -85,8 +88,8 @@ const loginUser = async (req, res) => {
         _id: user._id,
         username: user.username,
         email: user.email,
-        insta: user.insta, 
-        linkedin: user.linkedin, 
+        insta: user.insta,
+        linkedin: user.linkedin,
         bio: user.bio,
       },
     });
@@ -152,4 +155,66 @@ const updateUsers = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getAllUsers, updateUsers };
+// File upload controller
+const uploadFile = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    const { fileName, category } = req.body;
+
+    if (!fileName || !category) {
+      return res
+        .status(400)
+        .json({ message: "File name and category are required" });
+    }
+
+    const newFile = await fileModel.create({
+      fileName,
+      category,
+      filePath: req.file.path,
+      fileType: req.file.mimetype,
+      uploadedBy: req.body.uploadedBy || "Anonymous",
+    });
+
+    res.status(201).json({
+      message: "File uploaded successfully",
+      file: newFile,
+    });
+  } catch (err) {
+    console.error("File upload error:", err);
+    res.status(500).json({ message: "Server error during file upload" });
+  }
+};
+
+// Get all files controller
+const getAllFiles = async (req, res) => {
+  try {
+    const { category } = req.query;
+
+    let query = {};
+    if (category && category !== "All") {
+      query.category = category;
+    }
+
+    const files = await fileModel.find(query).sort({ uploadedAt: -1 });
+
+    res.status(200).json({
+      message: "Files retrieved successfully",
+      files,
+    });
+  } catch (err) {
+    console.error("Get files error:", err);
+    res.status(500).json({ message: "Server error while fetching files" });
+  }
+};
+
+module.exports = {
+  registerUser,
+  loginUser,
+  getAllUsers,
+  updateUsers,
+  uploadFile,
+  getAllFiles,
+};

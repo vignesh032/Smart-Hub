@@ -37,7 +37,7 @@ const Profile = () => {
       const res = await axios.post(
         "http://localhost:3000/api/auth/update-user",
         {
-          id: user.id,
+          id: user._id,
           insta: insta,
           linkedin: linkedin,
           bio: bio,
@@ -85,7 +85,7 @@ const Profile = () => {
                     />
                   </div>
                   <div className="linkedin">
-                    <label htmlFor="linkedin">Linkedin Id</label>
+                    <label htmlFor="linkedin">Linkedin</label>
                     <input
                       type="text"
                       placeholder="Eg. vigneshvs03"

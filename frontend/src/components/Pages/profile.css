@@ -52,6 +52,9 @@ a{
     flex-direction: column;
     gap: 10px;
 }
+.linkedin{
+    margin-bottom: 3em;
+}
 .input-detailss input{
     padding: 10px;
     width: 400px;

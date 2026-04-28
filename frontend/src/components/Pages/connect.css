@@ -12,3 +12,17 @@
     box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
     border-radius: 8px;
 }
+.card-container .card img{
+    height: 70px;
+}
+.card-container .card .card-left{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.card-container .card .card-right{
+    display: flex;
+}
+.card-container .card .card-right img{
+    height: 40px;
+}
