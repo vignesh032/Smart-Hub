@@ -12,5 +12,8 @@ app.use(cookieParser());
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.use("/api/auth", router);
+app.get("/", (req, res) => {
+  res.json({ message: "Backend is running" });
+});
 
 module.exports = app;
