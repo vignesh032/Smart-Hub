@@ -35,7 +35,7 @@ const Profile = () => {
       console.log("user",user)
       console.log("userid",user.id)
       const res = await axios.post(
-        "http://localhost:3000/api/auth/update-user",
+        "https://smart-hub-kzqs.vercel.app/api/auth/update-user",
         {
           id: user._id,
           insta: insta,

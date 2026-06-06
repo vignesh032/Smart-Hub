@@ -34,7 +34,7 @@ const Login = () => {
     try {
       if (boolean === true) {
         const res = await axios.post(
-          "http://localhost:3000/api/auth/register",
+          "https://smart-hub-kzqs.vercel.app/api/auth/register",
           {
             username,
             email,
@@ -49,7 +49,7 @@ const Login = () => {
 
         navigate("/");
       } else {
-        const res = await axios.post("http://localhost:3000/api/auth/login", {
+        const res = await axios.post("https://smart-hub-kzqs.vercel.app/api/auth/login", {
           username,
           password: pass,
         });

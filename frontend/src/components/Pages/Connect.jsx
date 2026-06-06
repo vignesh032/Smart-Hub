@@ -13,7 +13,7 @@ const Connect = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/api/auth/users");
+        const res = await axios.get("https://smart-hub-kzqs.vercel.app/api/auth/users");
         console.log("API RESPONSE:", res.data);
         const filtered = res.data.users.filter((u) => u._id !== user?.id);
 

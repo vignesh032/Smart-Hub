@@ -19,7 +19,7 @@ const Explore = () => {
   const fetchFiles = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/auth/files?category=${selectedCategory}`,
+        `https://smart-hub-kzqs.vercel.app/api/auth/files?category=${selectedCategory}`,
       );
       const data = await response.json();
       if (response.ok) {
@@ -59,7 +59,7 @@ const Explore = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3000/api/auth/upload-file",
+        "https://smart-hub-kzqs.vercel.app/api/auth/upload-file",
         {
           method: "POST",
           body: formData,
