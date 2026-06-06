@@ -1,5 +1,5 @@
 import React from "react";
-import "./app.css";
+import "./App.css";
 import Nav from "./components/Nav/Nav";
 import Sidebar from "./components/Sidebar/sidebar";
 import { Route, Routes } from "react-router-dom";
