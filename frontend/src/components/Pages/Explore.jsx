@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./explore.css";
-import Loading from "../components/Loading";
+import Loading from "../Loading";
 
 const Explore = () => {
   const [files, setFiles] = useState([]);
