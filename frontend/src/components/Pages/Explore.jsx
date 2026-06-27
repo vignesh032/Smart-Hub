@@ -19,7 +19,7 @@ const Explore = () => {
   const fetchFiles = async () => {
     try {
       const response = await fetch(
-        `https://smart-hub-kzqs.vercel.app/api/auth/files?category=${selectedCategory}`,
+        `https://smart-hub-1-3etl.onrender.com/api/auth/files?category=${selectedCategory}`,
       );
       const data = await response.json();
       if (response.ok) {
@@ -59,7 +59,7 @@ const Explore = () => {
 
     try {
       const response = await fetch(
-        "https://smart-hub-kzqs.vercel.app/api/auth/upload-file",
+        "https://smart-hub-1-3etl.onrender.com/api/auth/upload-file",
         {
           method: "POST",
           body: formData,
@@ -120,7 +120,7 @@ const Explore = () => {
                         </p>
                       </div>
                       <a
-                        href={`http://localhost:3000/${file.filePath}`}
+                        href={`https://smart-hub-1-3etl.onrender.com/${file.filePath}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="download-btn"
