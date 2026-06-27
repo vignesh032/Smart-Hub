@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./explore.css";
+import Loading from "../components/Loading";
 
 const Explore = () => {
   const [files, setFiles] = useState([]);
@@ -8,37 +9,34 @@ const Explore = () => {
   const [category, setCategory] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadMessage, setUploadMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const categories = ["All", "Notes", "PDF", "Assignments", "Books", "Other"];
 
-  // Fetch files from backend
-  useEffect(() => {
-    fetchFiles();
-  }, [selectedCategory]);
-
+  // Fetch files
   const fetchFiles = async () => {
+    setLoading(true);
+
     try {
       const response = await fetch(
-        `https://smart-hub-1-3etl.onrender.com/api/auth/files?category=${selectedCategory}`,
+        `https://smart-hub-1-3etl.onrender.com/api/auth/files?category=${selectedCategory}`
       );
+
       const data = await response.json();
+
       if (response.ok) {
         setFiles(data.files);
       }
     } catch (error) {
       console.error("Error fetching files:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Group files by category
-  const filesByCategory = files.reduce((acc, file) => {
-    const cat = file.category || "Other";
-    if (!acc[cat]) {
-      acc[cat] = [];
-    }
-    acc[cat].push(file);
-    return acc;
-  }, {});
+  useEffect(() => {
+    fetchFiles();
+  }, [selectedCategory]);
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -58,12 +56,14 @@ const Explore = () => {
     formData.append("category", category);
 
     try {
+      setLoading(true);
+
       const response = await fetch(
         "https://smart-hub-1-3etl.onrender.com/api/auth/upload-file",
         {
           method: "POST",
           body: formData,
-        },
+        }
       );
 
       const data = await response.json();
@@ -73,19 +73,37 @@ const Explore = () => {
         setFileName("");
         setCategory("");
         setSelectedFile(null);
-        fetchFiles();
+
+        await fetchFiles();
       } else {
         setUploadMessage(data.message || "Upload failed");
       }
     } catch (error) {
       console.error("Error uploading file:", error);
       setUploadMessage("Error uploading file");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const filesByCategory = files.reduce((acc, file) => {
+    const cat = file.category || "Other";
+
+    if (!acc[cat]) {
+      acc[cat] = [];
+    }
+
+    acc[cat].push(file);
+
+    return acc;
+  }, {});
+
+  if (loading) {
+    return <Loading text="Loading Files..." />;
+  }
+
   return (
     <div className="explore-container">
-      {/* Top Section: Display Files by Category */}
       <div className="files-display-section">
         <h2 className="section-title">Explore Files & Notes</h2>
 
@@ -93,7 +111,9 @@ const Explore = () => {
           {categories.map((cat) => (
             <button
               key={cat}
-              className={`category-btn ${selectedCategory === cat ? "active" : ""}`}
+              className={`category-btn ${
+                selectedCategory === cat ? "active" : ""
+              }`}
               onClick={() => setSelectedCategory(cat)}
             >
               {cat}
@@ -105,31 +125,32 @@ const Explore = () => {
           {Object.entries(filesByCategory).map(([cat, catFiles]) => (
             <div key={cat} className="category-section">
               <h3 className="category-title">{cat}</h3>
+
               <div className="files-list">
-                {catFiles.length === 0 ? (
-                  <p className="no-files">No files in this category</p>
-                ) : (
-                  catFiles.map((file) => (
-                    <div key={file._id} className="file-card">
-                      <div className="file-icon">📄</div>
-                      <div className="file-info">
-                        <h4 className="file-name">{file.fileName}</h4>
-                        <p className="file-category">{file.category}</p>
-                        <p className="file-date">
-                          {new Date(file.uploadedAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <a
-                        href={`https://smart-hub-1-3etl.onrender.com/${file.filePath}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="download-btn"
-                      >
-                        View
-                      </a>
+                {catFiles.map((file) => (
+                  <div key={file._id} className="file-card">
+                    <div className="file-icon">📄</div>
+
+                    <div className="file-info">
+                      <h4 className="file-name">{file.fileName}</h4>
+
+                      <p className="file-category">{file.category}</p>
+
+                      <p className="file-date">
+                        {new Date(file.uploadedAt).toLocaleDateString()}
+                      </p>
                     </div>
-                  ))
-                )}
+
+                    <a
+                      href={`https://smart-hub-1-3etl.onrender.com/${file.filePath}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="download-btn"
+                    >
+                      View
+                    </a>
+                  </div>
+                ))}
               </div>
             </div>
           ))}
@@ -142,12 +163,13 @@ const Explore = () => {
         )}
       </div>
 
-      {/* Bottom Section: Upload File Form */}
       <div className="upload-section">
         <h3 className="upload-title">Upload File</h3>
+
         <form className="upload-form" onSubmit={handleUpload}>
           <div className="form-group">
             <label>File Name:</label>
+
             <input
               type="text"
               value={fileName}
@@ -159,12 +181,14 @@ const Explore = () => {
 
           <div className="form-group">
             <label>Category:</label>
+
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               className="form-select"
             >
               <option value="">Select Category</option>
+
               {categories
                 .filter((c) => c !== "All")
                 .map((cat) => (
@@ -177,6 +201,7 @@ const Explore = () => {
 
           <div className="form-group">
             <label>Select File:</label>
+
             <input
               type="file"
               onChange={handleFileChange}
@@ -188,7 +213,9 @@ const Explore = () => {
             Upload File
           </button>
 
-          {uploadMessage && <p className="upload-message">{uploadMessage}</p>}
+          {uploadMessage && (
+            <p className="upload-message">{uploadMessage}</p>
+          )}
         </form>
       </div>
     </div>
