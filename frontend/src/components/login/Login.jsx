@@ -49,7 +49,7 @@ const Login = () => {
 
         navigate("/");
       } else {
-        const res = await axios.post("https://smart-hub-kzqs.vercel.app/api/auth/login", {
+        const res = await axios.post("https://smart-hub-1-3etl.onrender.com/api/auth", {
           username,
           password: pass,
         });
