@@ -1,9 +1,16 @@
-require('dotenv').config()
-const app=require('./src/app');
-const connectDB = require('./src/db/db')
+require("dotenv").config();
 
-connectDB();
+const app = require("./src/app");
+const connectDB = require("./src/db/db");
 
-app.listen(3000,()=>{
-    console.log("Listening to port 3000")
-})
+const PORT = process.env.PORT || 3000;
+
+async function start() {
+  await connectDB();
+
+  app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+  });
+}
+
+start();
